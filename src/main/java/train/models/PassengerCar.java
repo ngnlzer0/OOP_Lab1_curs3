@@ -4,7 +4,7 @@ import train.enums.WagonLevel;
 
 public class PassengerCar extends TrainCar{
     private int number_cities;
-    private WagonLevel level;
+    private WagonLevel level; //car type by comfort
     private int current_pasangers;
 
     public PassengerCar(int id,double weight, double suspension_width, int number_cities, WagonLevel level, int current_pasangers)
@@ -15,7 +15,7 @@ public class PassengerCar extends TrainCar{
         this.current_pasangers = current_pasangers;
     }
 
-    //gettesr:
+    //getters:
     public int getNumber_cities(){return number_cities;}
     public WagonLevel getLevel(){return level;}
     public int getCurrent_pasangers(){return current_pasangers;}
