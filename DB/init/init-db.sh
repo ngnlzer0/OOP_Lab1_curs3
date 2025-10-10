@@ -37,6 +37,6 @@ EOSQL
 
 # Ініціалізація таблиць
 echo "** Running create_table.sql..."
-psql -U "$POSTGRES_APP_USER" -h "$POSTGRES_HOST" -d "$POSTGRES_APP_DB" -f "$(dirname "$0")/../../PosthreSQL/create_table.sql"
+psql -U "$POSTGRES_APP_USER" -h "$POSTGRES_HOST" -d "$POSTGRES_APP_DB" -f "$(dirname "$0")/../PostgreSQL/create_table.sql"
 
 echo "** Database initialization complete!"
