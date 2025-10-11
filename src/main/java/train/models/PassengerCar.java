@@ -2,41 +2,52 @@ package train.models;
 
 import train.enums.WagonLevel;
 
-public class PassengerCar extends TrainCar{
-    private int number_cities;
-    private WagonLevel level; //car type by comfort
-    private int current_pasangers;
+public class PassengerCar extends TrainCar {
+    private int capacity;
+    private WagonLevel level;
+    private int currentPassengers;
+    private double luggageWeight;
 
-    public PassengerCar(int id,double weight, double suspension_width, int number_cities, WagonLevel level, int current_pasangers)
-    {
-        super(id,weight,suspension_width);
-        this.number_cities = number_cities;
+    public PassengerCar(int id, double weight, double suspensionWidth, int capacity,
+                        WagonLevel level, int currentPassengers, double luggageWeight) {
+        super(id, weight, suspensionWidth);
+        this.capacity = capacity;
         this.level = level;
-        this.current_pasangers = current_pasangers;
+        this.currentPassengers = currentPassengers;
+        this.luggageWeight = luggageWeight;
     }
 
-    //getters:
-    public int getNumber_cities(){return number_cities;}
-    public WagonLevel getLevel(){return level;}
-    public int getCurrent_pasangers(){return current_pasangers;}
+    // Getters
+    public int getCapacity() { return capacity; }
+    public WagonLevel getLevel() { return level; }
+    public int getCurrentPassengers() { return currentPassengers; }
+    public double getLuggageWeight() { return luggageWeight; }
 
-    //setters:
-    public int setCurrent_pasangers(int new_number){this.current_pasangers = new_number; return current_pasangers;}
+    // Setters
+    public void setCurrentPassengers(int newCount) {
+        if (newCount < 0 || newCount > capacity)
+            throw new IllegalArgumentException("Invalid number of passengers");
+        this.currentPassengers = newCount;
+    }
+
+    public void setLuggageWeight(double luggageWeight) {
+        if (luggageWeight < 0)
+            throw new IllegalArgumentException("Luggage weight cannot be negative");
+        this.luggageWeight = luggageWeight;
+    }
 
     @Override
-    public int getCapacity(){return number_cities;}
-
-    @Override
-    public double calculateTotalWeight() {return getWeight() + current_pasangers * 70;}
+    public double calculateTotalWeight() {
+        // базова вага + пасажири + багаж
+        return getWeight() + currentPassengers * 70 + luggageWeight;
+    }
 
     @Override
     public String toString() {
-        return "PassengerCar{" +
-                "id=" + getID() +
-                ", number cities= " + number_cities +
-                ", passengers=" + current_pasangers +
-                ", comfortLevel=" + level +
-                ", totalWeight=" + calculateTotalWeight() +
-                '}';
+        return String.format(
+                "PassengerCar{id=%d, comfort=%s, capacity=%d, passengers=%d, totalWeight=%.2f}",
+                getID(), level, capacity, currentPassengers, calculateTotalWeight()
+        );
     }
 }
+
