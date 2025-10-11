@@ -10,7 +10,8 @@ public class Main {
     {
         System.out.println("Hello dear java");
 
-        PassengerCar wagon1 = new PassengerCar(1,1000,1280,80,WagonLevel.PREMIUM,30);
+        /*
+        PassengerCar wagon1 = new PassengerCar(1,1000,1280,80,WagonLevel.PREMIUM,30,3.5);
 
         System.out.println(wagon1.toString());
 
@@ -29,5 +30,7 @@ public class Main {
         System.out.println((Fre1.toString()));
 
         System.out.println(loc1.toString());
+        */
+
     }
 }
