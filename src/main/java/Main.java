@@ -4,33 +4,42 @@ import train.models.PassengerCar;
 import train.models.TrainCar;
 import train.enums.WagonLevel;
 import train.models.FreightCar;
+import train.models.Train;
 
 public class Main {
     public static void main(String[] args )
     {
-        System.out.println("Hello dear java");
 
-        /*
-        PassengerCar wagon1 = new PassengerCar(1,1000,1280,80,WagonLevel.PREMIUM,30,3.5);
+        // Створюємо локомотив
+        Locomotive loco = new Locomotive(1, 80000, 1500, 3000, FuelType.DIESEL, 120);
 
-        System.out.println(wagon1.toString());
+        // Створюємо пасажирські вагони
+        PassengerCar car1 = new PassengerCar(2, 20000, 1500, 50, WagonLevel.SITTING, 40, 500);
+        PassengerCar car2 = new PassengerCar(3, 25000, 1500, 70, WagonLevel.LUXURY, 60, 1000);
+        PassengerCar car3 = new PassengerCar(6, 15000, 1500, 70, WagonLevel.COMPARTMENT, 50, 800);
 
-        Locomotive loc1 = new Locomotive(2,3000,1280,60, FuelType.ELECTRICITY,240);
 
-        FreightCar Fre1 = new FreightCar(3,1200,8.5,5000,20000);
+        // Створюємо вантажні вагони
+        FreightCar freight1 = new FreightCar(4, 18000, 1500, 100, 30000);
+        freight1.loadCargo(10000, 60);
 
-        System.out.println((Fre1.toString()));
+        FreightCar freight2 = new FreightCar(5, 19000, 1500, 80, 25000);
+        freight2.loadCargo(8000, 40);
 
-        Fre1.loadCargo(3333,1333);
+        // Створюємо поїзд
+        Train train = new Train(loco);
+        train.addCar(car1);
+        train.addCar(car2);
+        train.addCar(freight1);
+        train.addCar(freight2);
+        train.addCar(car3);
 
-        System.out.println((Fre1.toString()));
+        // Вивід інформації
+        System.out.println(train);
 
-        Fre1.unloadCargo(1000,200);
-
-        System.out.println((Fre1.toString()));
-
-        System.out.println(loc1.toString());
-        */
-
+        // Спробуємо сортування
+        train.sortByComfortLevel();
+        System.out.println("\n=== After sorting by weight ===");
+        System.out.println(train);
     }
 }
