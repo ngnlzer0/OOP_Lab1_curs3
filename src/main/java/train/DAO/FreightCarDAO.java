@@ -28,6 +28,17 @@ public class FreightCarDAO {
         }
     }
 
+    public void deleteFreightCar(int carId) {
+        String sql = "DELETE FROM freight_cars WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, carId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<FreightCar> getFreightCarsByTrainId(int trainId) {
         List<FreightCar> cars = new ArrayList<>();
         String sql = "SELECT * FROM freight_cars WHERE train_id = ?";

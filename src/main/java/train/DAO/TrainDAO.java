@@ -35,14 +35,23 @@ public class TrainDAO {
         return trains;
     }
 
-    public void deleteTrain(int id) {
+    public void deleteTrain(int trainId) {
+        // Завдяки FOREIGN KEY з ON DELETE CASCADE, цей запит видалить
+        // пов'язані записи з locomotives, passenger_cars та freight_cars.
         String sql = "DELETE FROM trains WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
+
+            ps.setInt(1, trainId);
+            int rowsAffected = ps.executeUpdate();
+
+            // Додамо логіку перевірки
+            if (rowsAffected == 0) {
+                System.out.println("Помилка: Потяг з ID " + trainId + " не знайдено.");
+            }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Помилка БД при видаленні потяга: " + e.getMessage());
         }
     }
 }

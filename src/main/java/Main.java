@@ -1,4 +1,4 @@
-import train.ui.TrainConsoleUI;
+import train.TrainConsoleUI;
 
 public class Main {
     public static void main(String[] args) {

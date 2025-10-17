@@ -2,7 +2,8 @@ package train.enums;
 
 public enum FuelType {
     DIESEL,
-    ELECTRICITY,
+    ELECTRIC,
     COAL,
-    HYBRID
+    HYBRID,
+    STEAM
 }

@@ -1,4 +1,4 @@
-package train.ui;
+package train;
 
 import train.DAO.*;
 import train.enums.FuelType;
@@ -7,6 +7,7 @@ import train.models.FreightCar;
 import train.models.Locomotive;
 import train.models.PassengerCar;
 import train.models.Train;
+import train.models.TrainCar;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -153,6 +154,7 @@ public class TrainConsoleUI {
             System.out.println("3. Додати вантажний вагон");
             System.out.println("4. Знайти пасажирські вагони за кількістю пасажирів");
             System.out.println("5. Сортувати вагони по... (зараз не реалізовано для DAO)");
+            System.out.println("6. Видалити вагон за ID ");
             System.out.println("0. Повернутися до головного меню");
             System.out.print("Оберіть опцію: ");
 
@@ -165,6 +167,7 @@ public class TrainConsoleUI {
                     case 3 -> addFreightCar(trainId, train);
                     case 4 -> findCarsByPassengerCount(train);
                     case 5 -> System.out.println("Сортування потрібно реалізовувати на рівні завантаженого об'єкта Train, але зміни не зберігаються у БД.");
+                    case 6 -> removeCar(train);
                     case 0 -> { return; }
                     default -> System.out.println("Невірна опція. Спробуйте ще.");
                 }
@@ -190,7 +193,8 @@ public class TrainConsoleUI {
             double maxSpeed = scanner.nextDouble();
             scanner.nextLine(); // consume newline
 
-            System.out.print("Тип палива (DIESEL/ELECTRIC/STEAM): ");
+
+            System.out.print("Тип палива (DIESEL/ELECTRIC/STEAM/COAL/HYBRID): ");
             FuelType fuelType = FuelType.valueOf(scanner.nextLine().toUpperCase());
 
             // ID локомотива буде генеруватися БД, тому тут передаємо 0
@@ -219,7 +223,7 @@ public class TrainConsoleUI {
             int passengers = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
-            System.out.print("Рівень комфорту (LUXURY/BUSINESS/ECONOMY): ");
+            System.out.print("Рівень комфорту (RESERVED_SEAT/SITTING/COMPARTMENT/LUXURY/PREMIUM): ");
             WagonLevel level = WagonLevel.valueOf(scanner.nextLine().toUpperCase());
 
             // ID вагона буде генеруватися БД, тому тут передаємо 0
@@ -263,6 +267,41 @@ public class TrainConsoleUI {
             System.out.println("Помилка: " + e.getMessage());
         }
     }
+    private static void removeCar(Train train) {
+        System.out.print("Введіть ID вагона для видалення: ");
+        try {
+            int carId = scanner.nextInt();
+            scanner.nextLine();
+
+            // 1. Шукаємо вагон в об'єкті Train в пам'яті
+            TrainCar carToRemove = train.findCarById(carId);
+
+            if (carToRemove == null) {
+                System.out.println("Помилка: Вагон з ID " + carId + " не знайдено у потязі.");
+                return;
+            }
+
+            // 2. Визначаємо тип вагона та видаляємо з бази даних
+            if (carToRemove instanceof PassengerCar) {
+                passengerCarDAO.deletePassengerCar(carId);
+            } else if (carToRemove instanceof FreightCar) {
+                freightCarDAO.deleteFreightCar(carId);
+            } else if (carToRemove instanceof Locomotive) {
+                System.out.println("Помилка: Локомотив не може бути видалений через це меню. Видаліть весь потяг.");
+                return;
+            }
+
+            // 3. Видаляємо з об'єкта Train в пам'яті
+            train.removeCarById(carId);
+            System.out.println("Вагон ID " + carId + " успішно видалено з потяга та бази даних.");
+
+        } catch (InputMismatchException e) {
+            System.out.println("Помилка: ID вагона має бути числом.");
+            scanner.nextLine();
+        } catch (Exception e) {
+            System.out.println("Виникла помилка при видаленні: " + e.getMessage());
+        }
+    }
 
     // --- Логіка Фільтрації ---
 
@@ -288,4 +327,5 @@ public class TrainConsoleUI {
             scanner.nextLine();
         }
     }
+
 }
